@@ -14,6 +14,7 @@ log = logging.getLogger(__name__)
 
 
 # Use given website to get the correct values for testing!  https://rusa.org/octime_acp.html
+# sudo docker exec container /app/run_tests.sh
 
 def test_brevet_1():
     # distance: (expected open, expected close)
