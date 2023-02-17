@@ -69,14 +69,15 @@ def open_time(control_dist_km, brevet_dist_km, brevet_start_time):
    temp = control_dist_km / max_speed
    hours = math.floor(temp)
    minutes = (temp - hours) * 60
-   # arrow.shift(hours+=blah, minutes=blah)
+   minutes = round(minutes) # will round it up or down appropriately?
+   # arrow.shift(hours=blah, minutes=blah)
    # return brev_start.shift(hours=hours, minutes=minutes) something like this
    # arrow.get() string to arrow format
    # arrow.format() arrow to string format
 
    # first checkpoint is always at 0!
 
-   return arrow.now() # basically dateTime.now() we want to return something else
+   return arrow.now() # brevet_start_time.shift(hours=, minutes=)(usually)
 
 
 def close_time(control_dist_km, brevet_dist_km, brevet_start_time):

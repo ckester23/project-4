@@ -116,13 +116,14 @@
             var TIME_CALC_URL = SCRIPT_ROOT + "/_calc_times";
 
             // FIX ME!
-            // Right now, only the kilometers are passed
+            // Right now, only the kilometers are passed!
             // you need to pass much more!
             // View flask_brevets.py for details.
             function calc_times(control) {
               var km = control.find("input[name='km']").val();
               var open_time_field = control.find("input[name='open']");
               var close_time_field = control.find("input[name='close']");
+              // add two more vars here then add them to the dict in the line below
 
               $.getJSON(TIME_CALC_URL, {km: km}).done(
                 function(data) {

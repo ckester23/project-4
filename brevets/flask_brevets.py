@@ -50,14 +50,23 @@ def _calc_times():
     Expects one URL-encoded argument, the number of miles.
     """
     app.logger.debug("Got a JSON request")
-    km = request.args.get('km', 999, type=float)
+    km = request.args.get('km', 999, type=float) # default value 999
+
+    # this stuff needs modified, by a little
+    bevet_dist = request.args.get('km', 999, type=float) # default value 999
+    start_time = request.args.get('time?', "00:00", type=str) # default value 999
+    start_time = arrow.get(start_time, "YYYY-MM-DD HH:mm") # insert correct format here too
+
     app.logger.debug("km={}".format(km))
     app.logger.debug("request.args: {}".format(request.args))
+
     # FIXME!
     # Right now, only the current time is passed as the start time
     # and control distance is fixed to 200
     # You should get these from the webpage!
-    # copy some code from prohject 3 for getting from webpage
+    # copy some code from project 3 for getting from webpage
+
+    # replace 200 for brevet_dist  replace arrow.now() with start_time
     open_time = acp_times.open_time(km, 200, arrow.now().isoformat).format('YYYY-MM-DDTHH:mm')
     close_time = acp_times.close_time(km, 200, arrow.now().isoformat).format('YYYY-MM-DDTHH:mm')
     result = {"open": open_time, "close": close_time}
