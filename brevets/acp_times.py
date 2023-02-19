@@ -18,7 +18,7 @@ import math
 #  with these signatures. You must keep
 #  these signatures even if you don't use all the
 #  same arguments.
-#
+# DONE
 
 
 def open_time(control_dist_km, brevet_dist_km, brevet_start_time):
@@ -41,43 +41,54 @@ def open_time(control_dist_km, brevet_dist_km, brevet_start_time):
        600 - 1000   28         11.428
        1000-1300    26         13.333
    """
-   # determine max speed for calculations
+   
 
-   # if control is over brev_dist, use brev_dist-control_dist for 
-      # determining max_speed
+   # SPECIAL CASES/CONDITIONS FIRST
+   # if control is over brev_dist, use brev_dist-control_dist for calculations
+   if (control_dist_km > brevet_dist_km):
+      control_dist_km = brevet_dist_km
 
-   max_speed = 0
+   # first checkpoint is always at 0
    if (control_dist_km == 0):
       return brevet_start_time
 
+   # NOW ONTO REGULAR CALCULATIONS
+   hours = 0
+   minutes = 0
    if (control_dist_km <= 200):
-      max_speed = 34
+      temp = control_dist_km / 34
+      hours = math.floor(temp)
+      minutes = (temp - hours) * 60
+      minutes = round(minutes)
 
    elif (control_dist_km <= 400):
-      max_speed = 32
+      minus_200 = control_dist_km - 200 
+      temp = (200 / 34) + (minus_200 / 32)
+
+      hours = math.floor(temp)
+      minutes = (temp - hours) * 60
+      minutes = round(minutes) 
 
    elif (control_dist_km <= 600):
-      max_speed= 30
+      minus_200_1 = control_dist_km - 200 
+      minus_200_2 = minus_200_1 - 200 
+      temp = (200/34) + (200/32) + (minus_200_2/30)
 
-   elif(control_dist_km <= 1000):
-      max_speed = 28
+      hours = math.floor(temp)
+      minutes = (temp - hours) * 60
+      minutes = round(minutes)
 
    else:
-      # error?? only allowed to go up to 1000 km
-      max_speed = 26
+      minus_200_1 = control_dist_km - 200 
+      minus_200_2 = minus_200_1 - 200
+      minus_200_3 = minus_200_2 - 200 
+      temp = (200/34) + (200/32) + (200/30) + (minus_200_3/28)
 
-   temp = control_dist_km / max_speed
-   hours = math.floor(temp)
-   minutes = (temp - hours) * 60
-   minutes = round(minutes) # will round it up or down appropriately?
-   # arrow.shift(hours=blah, minutes=blah)
-   # return brev_start.shift(hours=hours, minutes=minutes) something like this
-   # arrow.get() string to arrow format
-   # arrow.format() arrow to string format
+      hours = math.floor(temp)
+      minutes = (temp - hours) * 60
+      minutes = round(minutes) 
 
-   # first checkpoint is always at 0!
-
-   return arrow.now() # brevet_start_time.shift(hours=, minutes=)(usually)
+   return brevet_start_time.shift(hours=hours, minutes=minutes)
 
 
 def close_time(control_dist_km, brevet_dist_km, brevet_start_time):
@@ -92,34 +103,48 @@ def close_time(control_dist_km, brevet_dist_km, brevet_start_time):
        An arrow object indicating the control close time.
        This will be in the same time zone as the brevet start time.
    """
-   # for control<= 60: 
-      # do control_dist/20 + 1 instead of all the extra stuff
+   # SPECIAL CONDITIONS/CASES FIRST
 
    # control == 0: close time is exactly one hour after brev_start
-   # the very last control will return brevet_start_time.shift by a pre-determined amount
-   # make a dictionary of the wikipedia values with brevet and final close time
+   if (control_dist_km == 0):
+      return brevet_start_time.shift(hours=1)
 
-   # if this control is the last checkpoint, return brev_start.shift by specified time
-      # last checkpoint can be up to 20% of brev_dist
-      # so if control >= brev_dist return brev_start.shift(specified shift by wikipedia)
-   min_speed = 0
-   if (brevet_dist_km <= 200):
-      min_speed = 15
 
-   elif (brevet_dist_km <= 400):
-      min_speed = 15
+   # control<= 60: control_dist/20 + 1 instead of all the extra stuff (French Rules)
+   if (control_dist_km <= 60):
+      temp = (control_dist_km/20 + 1)
+      hours = math.floor(temp)
+      minutes = (temp-hours) * 60
+      minutes = round(minutes)
+      return brevet_start_time.shift(hours=hours, minutes=minutes)
 
-   elif (brevet_dist_km <= 600):
-      min_speed= 15
+   # the very last checkpoint will close at a pre-mandated time: define the times here
+   mandated_endTimes = {
+      200: brevet_start_time.shift(hours=13, minutes=30),
+      300: brevet_start_time.shift(hours=20, minutes=00),
+      400: brevet_start_time.shift(hours=27, minutes=00),
+      600: brevet_start_time.shift(hours=40, minutes=00),
+      1000: brevet_start_time.shift(hours=75, minutes=00)
+   }
 
-   elif(brevet_dist_km <= 1000):
-      min_speed = 11.428
+   # the last checkpoint may be equal to or up to 20% greater than brev_dist
+   if (control_dist_km >= brevet_dist_km):
+      return mandated_endTimes[brevet_dist_km]
+
+   # NOW ON TO REGULAR CALCULATIONS
+   hours = 0 
+   minutes = 0
+   if (control_dist_km <= 600):
+      temp = control_dist_km / 15
+      hours = math.floor(temp)
+      minutes = (temp - hours) * 60
+      minutes = round(minutes)
 
    else:
-      min_speed = 13.333
+      minus_600 = control_dist_km - 600
+      temp = (600/15) + (minus_600/11.428)
+      hours = math.floor(temp)
+      minutes = (temp - hours) * 60
+      minutes = round(minutes)
 
-   temp = control_dist_km / min_speed
-   hours = math.floor(temp)
-   minutes = (temp - hours) * 60
-
-   return arrow.now() # basically dateTime.now() we want to return something else
+   return brevet_start_time.shift(hours=hours, minutes=minutes)

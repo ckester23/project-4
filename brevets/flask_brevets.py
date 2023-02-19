@@ -53,12 +53,16 @@ def _calc_times():
     km = request.args.get('km', 999, type=float) # default value 999
 
     # this stuff needs modified, by a little
-    bevet_dist = request.args.get('km', 999, type=float) # default value 999
-    start_time = request.args.get('time?', "00:00", type=str) # default value 999
-    start_time = arrow.get(start_time, "YYYY-MM-DD HH:mm") # insert correct format here too
+    brevet_dist = request.args.get('brevet_dist', 999, type=float)
+    start_time = request.args.get('start_time', "2023-02-1700:00", type=str) 
+    start_time = arrow.get(start_time, "YYYY-MM-DDTHH:mm") 
 
+    print(brevet_dist)
     app.logger.debug("km={}".format(km))
+    app.logger.debug("brev={}".format(brevet_dist))
+    app.logger.debug("start={}".format(start_time))
     app.logger.debug("request.args: {}".format(request.args))
+    print(request.args)
 
     # FIXME!
     # Right now, only the current time is passed as the start time
@@ -66,9 +70,8 @@ def _calc_times():
     # You should get these from the webpage!
     # copy some code from project 3 for getting from webpage
 
-    # replace 200 for brevet_dist  replace arrow.now() with start_time
-    open_time = acp_times.open_time(km, 200, arrow.now().isoformat).format('YYYY-MM-DDTHH:mm')
-    close_time = acp_times.close_time(km, 200, arrow.now().isoformat).format('YYYY-MM-DDTHH:mm')
+    open_time = acp_times.open_time(km, brevet_dist, start_time).format('YYYY-MM-DDTHH:mm')
+    close_time = acp_times.close_time(km, brevet_dist, start_time).format('YYYY-MM-DDTHH:mm')
     result = {"open": open_time, "close": close_time}
     return flask.jsonify(result=result)
 
