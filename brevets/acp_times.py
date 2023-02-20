@@ -57,6 +57,7 @@ def open_time(control_dist_km, brevet_dist_km, brevet_start_time):
    minutes = 0
    if (control_dist_km <= 200):
       temp = control_dist_km / 34
+
       hours = math.floor(temp)
       minutes = (temp - hours) * 60
       minutes = round(minutes)
@@ -113,6 +114,7 @@ def close_time(control_dist_km, brevet_dist_km, brevet_start_time):
    # control<= 60: control_dist/20 + 1 instead of all the extra stuff (French Rules)
    if (control_dist_km <= 60):
       temp = (control_dist_km/20 + 1)
+
       hours = math.floor(temp)
       minutes = (temp-hours) * 60
       minutes = round(minutes)
@@ -136,6 +138,7 @@ def close_time(control_dist_km, brevet_dist_km, brevet_start_time):
    minutes = 0
    if (control_dist_km <= 600):
       temp = control_dist_km / 15
+
       hours = math.floor(temp)
       minutes = (temp - hours) * 60
       minutes = round(minutes)
@@ -143,6 +146,7 @@ def close_time(control_dist_km, brevet_dist_km, brevet_start_time):
    else:
       minus_600 = control_dist_km - 600
       temp = (600/15) + (minus_600/11.428)
+      
       hours = math.floor(temp)
       minutes = (temp - hours) * 60
       minutes = round(minutes)

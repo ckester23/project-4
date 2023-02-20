@@ -115,22 +115,18 @@
             var SCRIPT_ROOT = {{ request.script_root|tojson|safe }} ;
             var TIME_CALC_URL = SCRIPT_ROOT + "/_calc_times";
 
-            // FIX ME!
-            // Right now, only the kilometers are passed!
-            // you need to pass much more!
-            // View flask_brevets.py for details.
+            // Now passes User's desired start time and brevet distance
             function calc_times(control) {
               var km = control.find("input[name='km']").val();
               var open_time_field = control.find("input[name='open']");
               var close_time_field = control.find("input[name='close']");
-              // add two more vars here then add them to the dict in the line below
+              // pass start time and brevet distance
               var brevet_dist = document.querySelector('#brevet_dist_km').value;
               var start_time = document.getElementById("begin_date").value;
 
               $.getJSON(TIME_CALC_URL, {km: km, brevet_dist: brevet_dist, start_time: start_time}).done(
                 function(data) {
                    var times = data.result;
-                   console.log("brevet Dist:", brevet_dist);
                    console.log("Got a response: ");
                    console.log("Response.open = " + times.open);
                    // This part will automatically fill the open and close slots,

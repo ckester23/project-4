@@ -12,12 +12,9 @@ logging.basicConfig(format='%(levelname)s:%(message)s',
                     level=logging.WARNING)
 log = logging.getLogger(__name__)
 
-# sudo docker exec container /app/run_tests.sh
+# For each possible brevet distance, test checkpoints every 50 km
 
 def test_brevet_200():
-    # distance: (expected open, expected close)
-    # copy this five times with different values and you're done with testing
-    
     brevet_start = arrow.get('2023-02-17 00:00', "YYYY-MM-DD HH:mm")
     brevet = 200
     checkpoints = {
@@ -34,9 +31,6 @@ def test_brevet_200():
         assert(close_time(km, brevet, brevet_start) == check_close)
 
 def test_brevet_300():
-    # distance: (expected open, expected close)
-    # copy this five times with different values and you're done with testing
-    
     brevet_start = arrow.get('2023-02-17 00:00', "YYYY-MM-DD HH:mm")
     brevet = 300
     checkpoints = {
@@ -47,7 +41,6 @@ def test_brevet_300():
         200: (brevet_start.shift(hours=5, minutes=53), brevet_start.shift(hours=13, minutes=20)),
         250: (brevet_start.shift(hours=7, minutes=27), brevet_start.shift(hours=16, minutes=40)),
         300: (brevet_start.shift(hours=9, minutes=00), brevet_start.shift(hours=20, minutes=00))
-
     }
 
     for km, time_tuple in checkpoints.items(): # loop through checkpoints
@@ -57,9 +50,6 @@ def test_brevet_300():
         assert(close_time(km, brevet, brevet_start) == check_close)
 
 def test_brevet_400():
-    # distance: (expected open, expected close)
-    # copy this five times with different values and you're done with testing
-    
     brevet_start = arrow.get('2023-02-17 00:00', "YYYY-MM-DD HH:mm")
     brevet = 400
     checkpoints = {
@@ -72,7 +62,6 @@ def test_brevet_400():
         300: (brevet_start.shift(hours=9, minutes=00), brevet_start.shift(hours=20, minutes=00)),
         350: (brevet_start.shift(hours=10, minutes=34), brevet_start.shift(hours=23, minutes=20)),
         400: (brevet_start.shift(hours=12, minutes=8), brevet_start.shift(hours=27, minutes=00))
-
     }
 
     for km, time_tuple in checkpoints.items(): # loop through checkpoints
@@ -82,9 +71,6 @@ def test_brevet_400():
         assert(close_time(km, brevet, brevet_start) == check_close)
 
 def test_brevet_600():
-    # distance: (expected open, expected close)
-    # copy this five times with different values and you're done with testing
-    
     brevet_start = arrow.get('2023-02-17 00:00', "YYYY-MM-DD HH:mm")
     brevet = 600
     checkpoints = {
@@ -102,7 +88,6 @@ def test_brevet_600():
         500: (brevet_start.shift(hours=15, minutes=28), brevet_start.shift(hours=33, minutes=20)),
         550: (brevet_start.shift(hours=17, minutes=8), brevet_start.shift(hours=36, minutes=40)),
         600: (brevet_start.shift(hours=18, minutes=48), brevet_start.shift(hours=40, minutes=00))
-        
     }
 
     for km, time_tuple in checkpoints.items(): # loop through checkpoints
@@ -111,13 +96,9 @@ def test_brevet_600():
         assert(open_time(km, brevet, brevet_start) == check_open)
         assert(close_time(km, brevet, brevet_start) == check_close)
 
-def test_brevet_1000():
-    # distance: (expected open, expected close)
-    # copy this five times with different values and you're done with testing
-    
+def test_brevet_1000():    
     brevet_start = arrow.get('2023-02-17 00:00', "YYYY-MM-DD HH:mm")
     brevet = 1000
-    # 25-: 7 27
     checkpoints = {
         0: (brevet_start, brevet_start.shift(hours=1)),
         50: (brevet_start.shift(hours=1, minutes=28), brevet_start.shift(hours=3, minutes=30)),
@@ -148,7 +129,4 @@ def test_brevet_1000():
         print(km)
         assert(open_time(km, brevet, brevet_start) == check_open)
         assert(close_time(km, brevet, brevet_start) == check_close)
-
-
-
-    
+        
